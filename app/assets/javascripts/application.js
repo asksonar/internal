@@ -11,6 +11,20 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
-//= require turbolinks
+//= require jqueryui
+// bootstrap.tooltip needs to override jqueryui.tooltip, so comes after
+//= require bootstrap
+//= require handlebars
+//= require zeroclipboard
+//= require remarkable-bootstrap-notify
+//= require URIjs
+//= require modulejs
+//= require bootstrap-select
+//= require local_time
+
+
+// insert 3rd party packages above this line
+
+// beware that require_tree will load in alphabetical, depth-first order
+
 //= require_tree .

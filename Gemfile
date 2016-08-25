@@ -10,7 +10,7 @@ gem 'rails', '>= 5.0.0.beta3', '< 5.1'
 # Use Puma as the app server
 # gem 'puma'
 # Use SCSS for stylesheets
-# gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -23,7 +23,7 @@ gem 'uglifier', '>= 1.3.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 # gem 'turbolinks', '~> 5.x'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -32,8 +32,52 @@ gem 'uglifier', '>= 1.3.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'thin'
+# use postgres instead of sqlite3
 gem 'pg'
+# user login framework
+gem 'devise'
+# add invitation support for devise
+gem 'devise_invitable'
+# bootstrap_form_for helper
+gem 'bootstrap_form'
+# navbar_item helper
+# gem 'rails_bootstrap_navbar'
+# used in ActiveRecordHashids for obfuscating ids
+gem 'hashids'
+# user authorization framework
+gem 'pundit'
+# better server than webrick
+gem 'thin'
+# sanitizer for non-markup
+gem 'sanitize'
+# gives us local_time and local_time_ago to handle timezones via javascript
+gem 'local_time'
+# pagination gem, with bootstrap styling
+gem 'kaminari-bootstrap'
+
+source 'https://rails-assets.org' do
+  # bootstrap with sass variables
+  gem 'rails-assets-bootstrap-sass'
+  # more icon elements than bootstrap has
+  gem 'rails-assets-fontawesome', '4.3.0' # verison 4.4.0 uses /fonts instead of /assets, which breaks
+  # handlebars javascript templating library
+  gem 'rails-assets-handlebars'
+  # lets us copy to clipboard
+  gem 'rails-assets-zeroclipboard'
+  # gives us nice-looking error messages, configured in application.html.erb
+  gem 'rails-assets-remarkable-bootstrap-notify'
+  # add animations for notify
+  gem 'rails-assets-animate.css'
+  # add helper to manipulate URLs
+  gem 'rails-assets-URIjs'
+  # add jqueryui for animate controls
+  gem 'rails-assets-jqueryui'
+  # add modulejs so we don't need to reorder javascript files
+  gem 'rails-assets-modulejs'
+  # much nicer looking selects by turning them into button dropdowns
+  gem 'rails-assets-bootstrap-select'
+end
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
