@@ -7,7 +7,7 @@
 # Instead of using volumes and "caching" vendor/bundle on the local machine
 # this file ADDs the volume contents and then bundle installs using the frozen config
 
-FROM local/web
+FROM local/internal
 
 ADD Gemfile Gemfile
 ADD Gemfile.lock Gemfile.lock
