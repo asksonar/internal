@@ -10,6 +10,10 @@ ENV HOME /root
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
 
+# install inotify and rsync so we can automatically copy our src folder
+RUN apt-get update
+RUN apt-get -y install rsync
+
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -21,19 +25,32 @@ ADD nginx/main.d/env.conf /etc/nginx/main.d/env.conf
 RUN rm /etc/nginx/sites-enabled/default
 # set my default site
 ADD nginx/sites-enabled/server.conf /etc/nginx/sites-enabled/server.conf
-# add our ssl certs
-ADD ssl /etc/ssl
 
-# forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
+# add our unicorn log files if they don't exist
+RUN mkdir -p /var/log/unicorn
+RUN touch /var/log/unicorn/stdout.log
+RUN touch /var/log/unicorn/stderr.log
 
-# enable nginx
-RUN rm -f /etc/service/nginx/down
+# run bundle and unicorn upon startup
+RUN mkdir -p /etc/my_init.d
+#ADD bundle_install.sh /etc/my_init.d/bundle_install.sh
+#ADD start_unicorn.sh /etc/my_init.d/start_unicorn.sh
 
 # startup scripts that can be passed to /sbin/my_init -- COMMAND ARGUMENTS...
 # exit 0 if you want to just run it and then shut it down
 ADD my_startup /etc/my_startup
+
+RUN mkdir -p /etc/my_init.d
+
+# add our ssl certs
+ADD ssl /etc/ssl
+
+# enable nginx
+RUN rm -f /etc/service/nginx/down
+
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 # for thin to use
 RUN mkdir -p /tmp/pids
