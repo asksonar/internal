@@ -26,11 +26,6 @@ RUN rm /etc/nginx/sites-enabled/default
 # set my default site
 ADD nginx/sites-enabled/server.conf /etc/nginx/sites-enabled/server.conf
 
-# add our unicorn log files if they don't exist
-RUN mkdir -p /var/log/unicorn
-RUN touch /var/log/unicorn/stdout.log
-RUN touch /var/log/unicorn/stderr.log
-
 # startup scripts that can be passed to /sbin/my_init -- COMMAND ARGUMENTS...
 # exit 0 if you want to just run it and then shut it down
 ADD my_startup /etc/my_startup
@@ -47,8 +42,6 @@ RUN rm -f /etc/service/nginx/down
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
-RUN ln -sf /dev/stdout /var/log/unicorn/stdout.log
-RUN ln -sf /dev/stderr /var/log/unicorn/stderr.log
 
 # for thin to use
 RUN mkdir -p /tmp/pids
