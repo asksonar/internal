@@ -31,14 +31,10 @@ RUN mkdir -p /var/log/unicorn
 RUN touch /var/log/unicorn/stdout.log
 RUN touch /var/log/unicorn/stderr.log
 
-# run bundle and unicorn upon startup
-RUN mkdir -p /etc/my_init.d
-#ADD bundle_install.sh /etc/my_init.d/bundle_install.sh
-#ADD start_unicorn.sh /etc/my_init.d/start_unicorn.sh
-
 # startup scripts that can be passed to /sbin/my_init -- COMMAND ARGUMENTS...
 # exit 0 if you want to just run it and then shut it down
 ADD my_startup /etc/my_startup
+RUN chmod +x /etc/my_startup/start_thin.sh
 
 RUN mkdir -p /etc/my_init.d
 
@@ -51,6 +47,8 @@ RUN rm -f /etc/service/nginx/down
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
+RUN ln -sf /dev/stdout /var/log/unicorn/stdout.log
+RUN ln -sf /dev/stderr /var/log/unicorn/stderr.log
 
 # for thin to use
 RUN mkdir -p /tmp/pids
