@@ -1,14 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Internal</title>
-    <%= csrf_meta_tags %>
-    <%= action_cable_meta_tag %>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Sonar Internal App</title>
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
   </head>
-
   <body>
-    <%= yield %>
+    <section id="main-wrapper" class="<%= content_for :main_wrapper_class %>">
+
+    <% if content_for? :nav_left %>
+      <%= content_for :nav_left %>
+    <% end %>
+
+    <% if content_for? :nav_header %>
+      <%= content_for :nav_header %>
+    <% else %>
+      <%= render partial: 'nav/header' %>
+    <% end %>
+
+    <section id="<%= controller_name + '-' + action_name %>" class="main-content-wrapper <%= content_for :main_content_wrapper_class %>">
+      <%= yield %>
+
+      <% if content_for? :nav_footer %>
+        <%= content_for :nav_footer %>
+      <% else %>
+        <%= render partial: 'nav/footer' %>
+      <% end %>
+    </section>
+  </section>
+
+  <%= render partial: 'utility/flash' %>
   </body>
 </html>
