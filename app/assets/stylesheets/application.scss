@@ -22,7 +22,7 @@ $icon-font-path: 'bootstrap/';
 @import 'bootstrap-select';
 
 // base package
-// @import 'shared/**/*';
+@import 'shared/**/*';
 
 // more specific overwriting packages
 // @import 'controllers/**/*';

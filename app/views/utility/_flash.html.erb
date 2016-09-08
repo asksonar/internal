@@ -1,0 +1,25 @@
+<script type='text/javascript'>
+  $(function(){
+    <% if flash[:notice] %>
+      notify.info('<%= j raw flash[:notice] %>');
+    <% end %>
+
+    <% if flash[:alert] %>
+      notify.error('<%= j raw flash[:alert] %>');
+    <% end %>
+
+    <% if defined? resource %>
+      <% resource.errors.full_messages.each do |message| %>
+        notify.error('<%= j raw message %>');
+      <% end %>
+    <% end %>
+
+    <% if flash[:info] %>
+      notify.info('<%= j raw flash[:info] %>');
+    <% end %>
+
+    <% if flash[:error] %>
+      notify.error('<%= j raw flash[:error] %>');
+    <% end %>
+  });
+</script>

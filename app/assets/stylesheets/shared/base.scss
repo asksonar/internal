@@ -1,0 +1,250 @@
+$white: #FFF;
+$green: #31B6AE;
+$dark-blue: #05647C;
+$medium-blue: #1CA5C9;
+$light-blue: #8ED2E4;
+$grey: #9A9AA2;
+$dark-grey: #323544;
+$orange: #F69526;
+
+body, .body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  word-break: break-word; // sadly unsupported on Firefox
+}
+
+a {
+  color: #05647C;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #05647C;
+  text-decoration: underline;
+}
+
+p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.sub {
+  font-size: 12px;
+  color: $grey;
+}
+
+strong, .strong {
+  font-weight: 600;
+}
+
+h1, .h1 {
+  font-size: 24px;
+  letter-spacing: -.25px;
+  line-height: 28px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+h2, .h2 {
+  font-size: 20px;
+  line-height: 26px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+h3, .h3 {
+  font-size: 18px;
+  line-height: 24px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+h4, .h4 {
+  font-size: 16px;
+  line-height: 22px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.form-group {
+  margin-bottom: 0px;
+}
+
+input.form-control + span.input-group-btn .btn {
+  padding-top: 7px; // the default 6px is 1px too short
+}
+
+.btn-green {
+  & {
+    background-color: $green;
+    color: $white;
+    // border: 1px solid darken($green, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($green, 5);
+    color: $white;
+    // border: 1px solid darken($green, 10);
+  }
+}
+
+.btn-dark-blue {
+  & {
+    background-color: $dark-blue;
+    color: $white;
+    // border: 1px solid darken($dark-blue, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($dark-blue, 5);
+    color: $white;
+    // border: 1px solid darken($dark-blue, 10);
+  }
+}
+
+.btn-medium-blue {
+  & {
+    background-color: $medium-blue;
+    color: $white;
+    // border: 1px solid darken($medium-blue, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($medium-blue, 5);
+    color: $white;
+    // border: 1px solid darken($medium-blue, 10);
+  }
+}
+
+.btn-light-blue {
+  & {
+    background-color: $light-blue;
+    color: $white;
+    // border: 1px solid darken($light-blue, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($light-blue, 5);
+    color: $white;
+    // border: 1px solid darken($light-blue, 10);
+  }
+}
+
+.btn-grey {
+  & {
+    background-color: $grey;
+    color: $white;
+    // border: 1px solid darken($grey, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($grey, 5);
+    color: $white;
+    // border: 1px solid darken($grey, 10);
+  }
+}
+
+.btn-dark-grey {
+  & {
+    background-color: $dark-grey;
+    color: $white;
+    // border: 1px solid darken($dark-grey, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($dark-grey, 5);
+    color: $white;
+    // border: 1px solid darken($dark-grey, 10);
+  }
+}
+
+.btn-orange {
+  & {
+    background-color: $orange;
+    color: $white;
+    // border: 1px solid darken($orange, 10);
+  }
+  &:hover, &:focus {
+    background-color: darken($orange, 5);
+    color: $white;
+    // border: 1px solid darken($orange, 10);
+  }
+}
+
+.btn-colorless {
+  background-color: initial;
+  color: initial;
+  border-color: transparent;
+}
+
+.btn-med {
+  padding: 10px 18px;
+}
+
+.form-control {
+  border-radius: 0px;
+}
+
+.form-control:focus {
+  border-color: #1CA5C9;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(28, 165, 201, 0.6);
+}
+
+.dropdown-menu {
+  border-radius: 0px;
+  margin-top: 0px;
+}
+
+.modal-content {
+  border-radius: 0px;
+  padding: 20px;
+  background-color: #FAFAFA;
+}
+
+.modal-dialog {
+  padding: 0px;
+}
+
+@media (min-width: $screen-sm-min) {
+  .modal-full {
+    width: auto;
+    margin-left: 30px;
+    margin-right: 15px;
+  }
+}
+
+.panel {
+  position: relative;
+  padding: 20px;
+  background: #FAFAFA;
+  border: none;
+  border-radius: 0px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+
+  .panel-heading {
+    padding: 0px;
+  }
+  .panel-body {
+    padding: 0px;
+  }
+}
+
+.fa {
+  min-width: 1.05em; /* icons such as fa-comment get cut off if width is 1em */
+  text-align: left;
+}
+
+.fa-ft { /* ft for text */
+  margin-right: .26em; /* roughly equivalent to a &nbsp; */
+}
+
+.fa-fl { /* fl for list */
+  width: 1.28571429em; /* from fa-fw */
+}
+
+.fa-ftl { /* ftl for text list */
+  @extend .fa-ft;
+  @extend .fa-fl;
+}
+
+.no-gutter { /* remove bootstrap column gutters */
+  [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
