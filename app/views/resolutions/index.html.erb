@@ -5,6 +5,28 @@
 <section class='main-content-header'>
   <h1><%= content_for :title %></h1>
 </section>
+
 <section class="main-content">
-  Resolution Page Content
+  <div class='resolutions-table table-responsive'>
+    <table class='table table-hover'>
+      <thead>
+        <tr>
+          <th class='column-name'>Id</th>
+          <th class='column-name'>Summary</th>
+          <th class='column-name'>Update Time</th>
+          <th class='column-name'>User</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resolutions.each do |resolution| %>
+          <tr class='resolution-row'>
+            <td class='resolution-id'><%= resolution['id'] %></td>
+            <td class='resolution-summary'><%= link_to resolution['summary'], resolution_path(resolution['id']) %></td>
+            <td class='resolution-time'><%= resolution['timestamp'] %></td>
+            <td class='resolution-user'><%= resolution['user'] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </section>

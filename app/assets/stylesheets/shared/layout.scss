@@ -26,6 +26,10 @@ body {
   .main-content-header {
     background: #F5F5F5;
     padding: 20px 20px;
+
+    @media (min-width: $screen-lg-min) {
+      padding: 20px 100px;
+    }
   }
 
   .main-content {
