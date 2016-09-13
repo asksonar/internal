@@ -25,4 +25,4 @@ $icon-font-path: 'bootstrap/';
 @import 'shared/**/*';
 
 // more specific overwriting packages
-// @import 'controllers/**/*';
+@import 'controllers/**/*';
