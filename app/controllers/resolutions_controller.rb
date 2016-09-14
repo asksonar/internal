@@ -3,7 +3,16 @@ class ResolutionsController < ApplicationController
 
   def index
     response = Airsonar.new.getResolutionQueue
-    @resolutions = response['change_items']
+    # @resolutions = response['change_items']
+    @resolutions = [
+      {
+        "action": "PATCH",
+        "datasource": "webservice",
+        "id": 41,
+        "uri": "/resolutionSvc/queue/41",
+        "user": "stacy@asksonar.com"
+      }
+    ]
   end
 
   def show
@@ -11,7 +20,7 @@ class ResolutionsController < ApplicationController
     response = Airsonar.new.getResolution(@resolution_id)
     merge_data = response['merge_data']
     updates = response['updates']
-
+    
     if !updates['aircraft_history'].nil?
       @update_type = 'aircraft_history'
       @merge_data = merge_data['aircraft_history']
