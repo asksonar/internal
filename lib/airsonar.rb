@@ -1,6 +1,6 @@
 class Airsonar
   include HTTParty
-  base_uri 'http://webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
+  base_uri 'https://webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
 
   def initialize()
     @options = {
@@ -11,7 +11,17 @@ class Airsonar
   end
 
   def getResolutionQueue
-    self.class.get("/resolutionSvc/queue/").parsed_response
+    puts 'getResolutionQueue'
+    begin
+      self.class.get("/resolutionSvc/queue/").parsed_response
+    rescue HTTParty::Error
+      puts 'HTTParty::Error'
+      {}
+    rescue StandardError
+      puts 'StandardError'
+      {}
+    end
+
   end
 
   def getResolution(id)
