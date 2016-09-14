@@ -54,6 +54,8 @@ gem 'sanitize'
 gem 'local_time'
 # pagination gem, with bootstrap styling
 gem 'kaminari-bootstrap'
+# consume restful web services
+gem 'httparty'
 
 source 'https://rails-assets.org' do
   # bootstrap with sass variables

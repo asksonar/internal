@@ -1,0 +1,50 @@
+<% content_for :title do %>
+  Resolution Show Page
+<% end %>
+
+<section class='main-content-header'>
+  <h1><%= content_for :title %></h1>
+</section>
+
+<section class='main-content'>
+  <div class='row'>
+    <%= bootstrap_form_for :resolutions, url: resolution_path(@resolution_id), method: :patch do |f| %>
+      <%= f.hidden_field :update_type, value: @update_type %>
+      <% @merge_data.each do |key,value| %>
+        <%= f.hidden_field "merge_data[#{key}]", value: value %>
+      <% end %>
+      <% @new_data.each do |key,value| %>
+        <%= f.hidden_field "new_data[#{key}]", value: value %>
+      <% end %>
+
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">Existing Data</div>
+          <ul class="list-group">
+            <% @merge_data.each do |key, value| %>
+              <li class="list-group-item"><%= key.titleize %>: <%= value %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">New Data</div>
+            <ul class="list-group">
+              <% @new_data.each do |key, value| %>
+                <li class="list-group-item">
+                  <%= f.form_group 'updates[' + key + ']', label: { text: key.titleize + ': ' + value.to_s, class:'item-label' } do %>
+                    <%= f.radio_button 'updates[' + key + ']', 'approve', label: "Approve", inline: true %>
+                    <%= f.radio_button 'updates[' + key + ']', 'reject', label: "Reject", inline: true %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+        </div>
+        <%= f.submit "Save", class: 'btn btn-dark-blue btn-block' %>
+      </div>
+
+    <% end %>
+  </div>
+</section>
