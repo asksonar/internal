@@ -1,6 +1,6 @@
 class Airsonar
   include HTTParty
-  base_uri 'webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
+  base_uri 'http://webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
 
   def initialize()
     @options = {
