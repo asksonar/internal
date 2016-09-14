@@ -1,18 +1,11 @@
+require 'airsonar'
+
 class ResolutionsController < ApplicationController
   # before_action :authenticate_user!
 
   def index
-    # response = Airsonar.new.getResolutionQueue
-    # @resolutions = response['change_items']
-    @resolutions = [
-      {
-        "action": "PATCH",
-        "datasource": "webservice",
-        "id": 41,
-        "uri": "/resolutionSvc/queue/41",
-        "user": "srtacy@asksonar.com"
-      }
-    ]
+    response = Airsonar.new.getResolutionQueue
+    @resolutions = response['change_items']
   end
 
   def show
