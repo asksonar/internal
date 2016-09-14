@@ -2,7 +2,7 @@ class ResolutionsController < ApplicationController
   # before_action :authenticate_user!
 
   def index
-    response = Airsonar.new.getResolutionQueue
+    # response = Airsonar.new.getResolutionQueue
     # @resolutions = response['change_items']
     @resolutions = [
       {
@@ -10,7 +10,7 @@ class ResolutionsController < ApplicationController
         "datasource": "webservice",
         "id": 41,
         "uri": "/resolutionSvc/queue/41",
-        "user": "stacy@asksonar.com"
+        "user": "srtacy@asksonar.com"
       }
     ]
   end
@@ -20,7 +20,7 @@ class ResolutionsController < ApplicationController
     response = Airsonar.new.getResolution(@resolution_id)
     merge_data = response['merge_data']
     updates = response['updates']
-    
+
     if !updates['aircraft_history'].nil?
       @update_type = 'aircraft_history'
       @merge_data = merge_data['aircraft_history']
