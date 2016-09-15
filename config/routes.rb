@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   # error pages #
   ###############
 
-  get '/403', to: 'errors#forbidden_403'
-  get '/404', to: 'errors#not_found_404'
-  get '/500', to: 'errors#internal_server_error_500'
-  get '/503', to: 'errors#service_unavailable_503'
+  match '/403', to: 'errors#forbidden_403', via: :all
+  match '/404', to: 'errors#not_found_404', via: :all
+  match '/500', to: 'errors#internal_server_error_500', via: :all
+  match '/503', to: 'errors#service_unavailable_503', via: :all
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
