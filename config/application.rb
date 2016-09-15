@@ -18,5 +18,11 @@ module Internal
     config.logger = Logger.new(STDOUT)
     config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG')
     config.log_level    = (ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].downcase : 'debug').to_sym
+
+    config.exceptions_app = self.routes
+
+    config.action_dispatch.rescue_responses.merge!(
+      'ActionController::ForbiddenError' => :forbidden
+    )
   end
 end
