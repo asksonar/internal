@@ -32,6 +32,7 @@ class ResolutionsController < ApplicationController
 
     if approved_updates.empty?
       response = airsonar.rejectResolution(params[:id])
+      flash[:info] = '<strong>Resolution successfully rejected</strong>'
     else
       options = Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
 
@@ -45,6 +46,7 @@ class ResolutionsController < ApplicationController
         end
       end
 
+      flash[:info] = '<strong>Resolution successfully merged</strong>'
       response = airsonar.applyResolution(params[:id], options)
     end
 
