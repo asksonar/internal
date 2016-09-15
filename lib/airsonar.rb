@@ -20,7 +20,7 @@ class Airsonar
   end
 
   def applyResolution(id, options)
-    options = @options.merge({ body: options.to_json })
+    options = @options.merge({ body: options })
     self.class.post("/resolutionSvc/queue/#{id}", options)
   end
 
