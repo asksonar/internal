@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  Resolution Show Page
+  <%= @resolution_type %> <%= @update_type.titleize %>
 <% end %>
 
 <section class='main-content-header'>
@@ -9,10 +9,13 @@
 <section class='main-content'>
   <div class='row'>
     <%= bootstrap_form_for :resolutions, url: resolution_path(@resolution_id), method: :patch do |f| %>
+      <%= f.hidden_field :resolution_type, value: @resolution_type %>
       <%= f.hidden_field :update_type, value: @update_type %>
+
       <% @merge_data.each do |key,value| %>
         <%= f.hidden_field "merge_data[#{key}]", value: value %>
       <% end %>
+      
       <% @new_data.each do |key,value| %>
         <%= f.hidden_field "new_data[#{key}]", value: value %>
       <% end %>

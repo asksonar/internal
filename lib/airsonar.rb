@@ -1,6 +1,6 @@
 class Airsonar
   include HTTParty
-  base_uri 'http://webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
+  base_uri 'webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
   raise_on (400..599).to_a
 
   def initialize()
@@ -20,7 +20,7 @@ class Airsonar
   end
 
   def applyResolution(id, options)
-    options = @options.merge({ body: options })
+    options = @options.merge({ body: options.to_json })
     self.class.post("/resolutionSvc/queue/#{id}", options)
   end
 

@@ -1,8 +1,6 @@
 require 'airsonar'
 
 class ResolutionsController < ApplicationController
-  # before_action :authenticate_user!
-
   def index
     response = Airsonar.new.getResolutionQueue
     @resolutions = response['change_items']
@@ -11,25 +9,41 @@ class ResolutionsController < ApplicationController
   def show
     @resolution_id = params[:id]
     response = Airsonar.new.getResolution(@resolution_id)
+    resolution_type = response['action']
     merge_data = response['merge_data']
     updates = response['updates']
 
-    if !updates['aircraft_history'].nil?
+    if resolution_type == 'POST' # create new aircraft history
+      @resolution_type = 'Create'
+      @update_type = 'aircraft_history'
+      @merge_data = {}
+      @new_data = updates['aircraft_history']
+    elsif resolution_type == 'DELETE' # delete aircraft history
+      @resolution_type = 'Delete'
       @update_type = 'aircraft_history'
       @merge_data = merge_data['aircraft_history']
-      @new_data = updates['aircraft_history']
-    else
-      @update_type = 'aircraft'
-      @merge_data = merge_data['aircraft']
-      @new_data = updates['aircraft']
+      @new_data = {}
+    elsif resolution_type == 'PATCH' # update aircraft / aircraft history
+      if !updates['aircraft_history'].nil?
+        @resolution_type = 'Update'
+        @update_type = 'aircraft_history'
+        @merge_data = merge_data['aircraft_history']
+        @new_data = updates['aircraft_history']
+      else
+        @resolution_type = 'Update'
+        @update_type = 'aircraft'
+        @merge_data = merge_data['aircraft']
+        @new_data = updates['aircraft']
+      end
     end
   end
 
   def update
     airsonar = Airsonar.new()
+
     approved_updates = updates.select { |key, value| value == 'approve' }.keys
     rejected_updates = updates.select { |key, value| value == 'reject' }.keys
-
+    
     if approved_updates.empty?
       response = airsonar.rejectResolution(params[:id])
       flash[:info] = '<strong>Resolution successfully rejected</strong>'
@@ -56,15 +70,19 @@ class ResolutionsController < ApplicationController
   private
 
   def merge_data
-    update_params[:merge_data]
+    update_params[:merge_data] || {}
   end
 
   def new_data
-    update_params[:new_data]
+    update_params[:new_data] || {}
   end
 
   def updates
-    update_params[:updates]
+    update_params[:updates] || {}
+  end
+
+  def resolution_type
+    update_params[:resolution_type]
   end
 
   def update_type
@@ -73,6 +91,7 @@ class ResolutionsController < ApplicationController
 
   def update_params
     params.require(:resolutions).permit(
+      :resolution_type,
       :update_type,
       :merge_data => [
         :id, :model, :msn, :delivery_date, :aircraft_status, :aircraft_type, :registration,
