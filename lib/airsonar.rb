@@ -11,20 +11,20 @@ class Airsonar
     }
   end
 
-  def getResolutionQueue
+  def get_resolutions
     self.class.get("/resolutionSvc/queue/").parsed_response
   end
 
-  def getResolution(id)
+  def get_resolution(id)
     self.class.get("/resolutionSvc/queue/#{id}").parsed_response
   end
 
-  def applyResolution(id, options)
+  def apply_resolution(id, options)
     options = @options.merge({ body: options.to_json })
     self.class.post("/resolutionSvc/queue/#{id}", options)
   end
 
-  def rejectResolution(id)
+  def reject_resolution(id)
     self.class.delete("/resolutionSvc/queue/#{id}")
   end
 end

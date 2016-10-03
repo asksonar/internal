@@ -221,7 +221,7 @@ DEPENDENCIES
   local_time
   pg
   pundit
-  rails (>= 5.0.0.beta3, < 5.1)
+  rails
   rails-assets-URIjs!
   rails-assets-animate.css!
   rails-assets-bootstrap-sass!

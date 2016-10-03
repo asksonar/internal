@@ -1,69 +1,50 @@
-require 'airsonar'
-
 class ResolutionsController < ApplicationController
   def index
-    response = Airsonar.new.getResolutionQueue
-    @resolutions = response['change_items']
+    @resolutions = api.get_resolutions
   end
 
   def show
     @resolution_id = params[:id]
-    response = Airsonar.new.getResolution(@resolution_id)
-    resolution_type = response['action']
-    merge_data = response['merge_data']
-    updates = response['updates']
+    response = api.get_resolution(@resolution_id)
 
-    if resolution_type == 'POST' # create new aircraft history
-      @resolution_type = 'Create'
-      @update_type = 'aircraft_history'
-      @merge_data = {}
-      @new_data = updates['aircraft_history']
-    elsif resolution_type == 'DELETE' # delete aircraft history
-      @resolution_type = 'Delete'
-      @update_type = 'aircraft_history'
-      @merge_data = merge_data['aircraft_history']
-      @new_data = {}
-    elsif resolution_type == 'PATCH' # update aircraft / aircraft history
-      if !updates['aircraft_history'].nil?
-        @resolution_type = 'Update'
-        @update_type = 'aircraft_history'
-        @merge_data = merge_data['aircraft_history']
-        @new_data = updates['aircraft_history']
-      else
-        @resolution_type = 'Update'
-        @update_type = 'aircraft'
-        @merge_data = merge_data['aircraft']
-        @new_data = updates['aircraft']
-      end
+    @resolution_type = response['action']
+    @user_comment = response['user_comment']
+    merge_data = response.fetch('merge_data', {})
+    updates = response.fetch('updates', {})
+
+    if @resolution_type == 'POST' || @resolution_type == 'PATCH'
+      @update_type = updates.keys.include?('aircraft_history') ? 'aircraft_history' : 'aircraft'
+    elsif @resolution_type == 'DELETE'
+      @update_type = merge_data.keys.include?('aircraft_history') ? 'aircraft_history' : 'aircraft'
     end
+
+    @new_data = updates.fetch(@update_type, {})
+    @merge_data = merge_data.fetch(@update_type, {})
   end
 
   def update
-    airsonar = Airsonar.new()
-
     approved_updates = updates.select { |key, value| value == 'approve' }.keys
     rejected_updates = updates.select { |key, value| value == 'reject' }.keys
-    
+
     if approved_updates.empty?
-      response = airsonar.rejectResolution(params[:id])
+      api.reject_resolution(params[:id])
       flash[:info] = '<strong>Resolution successfully rejected</strong>'
-    else
-      options = Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
-
-      if approved_updates.present? && rejected_updates.present?
-        merge_data.each do |key, value|
-          options[:merge_data][update_type][key] = value
-        end
-
-        approved_updates.each do |key, value|
-          options[:updates][update_type][key] = new_data[key]
-        end
-      end
-
-      flash[:info] = '<strong>Resolution successfully merged</strong>'
-      response = airsonar.applyResolution(params[:id], options)
     end
 
+    options = Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
+
+    if approved_updates.present? && rejected_updates.present?
+      merge_data.each do |key, value|
+        options[:merge_data][update_type][key] = value
+      end
+
+      approved_updates.each do |key, value|
+        options[:updates][update_type][key] = new_data[key]
+      end
+    end
+
+    api.apply_resolution(params[:id], options)
+    flash[:info] = '<strong>Resolution successfully merged</strong>'
     redirect_to resolutions_path
   end
 
@@ -81,30 +62,34 @@ class ResolutionsController < ApplicationController
     update_params[:updates] || {}
   end
 
-  def resolution_type
-    update_params[:resolution_type]
-  end
-
   def update_type
     update_params[:update_type]
   end
 
   def update_params
     params.require(:resolutions).permit(
-      :resolution_type,
       :update_type,
       :merge_data => [
         :id, :model, :msn, :delivery_date, :aircraft_status, :aircraft_type, :registration,
-        :engine_model, :engine_variant,:operator, :build_year, :aircraft_age, :line_number
+        :engine_model, :engine_variant, :operator, :operator_name, :build_year, :aircraft_age,
+        :line_number, :delete_aircraft_history, :engine_name, :seats_configuration
       ],
       :new_data => [
         :aircraft_status, :aircraft_type, :registration, :engine_model, :engine_variant,
-        :operator, :build_year, :aircraft_age, :line_number
+        :operator, :operator_name, :build_year, :aircraft_age, :line_number, :delete_aircraft_history,
+        :delivery_date, :engine_name, :seats_configuration
       ],
       :updates => [
         :aircraft_status, :aircraft_type, :registration, :engine_model, :engine_variant,
-        :operator, :build_year, :aircraft_age, :line_number
-      ]
+        :operator, :operator_name, :build_year, :aircraft_age, :line_number, :delete_aircraft_history,
+        :delivery_date, :engine_name, :seats_configuration
+      ],
     )
+  end
+
+  private
+
+  def api
+    @api ||= ResolutionsService.instance
   end
 end
