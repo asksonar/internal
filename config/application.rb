@@ -14,6 +14,9 @@ module Internal
 
     config.autoload_paths += %W(#{config.root}/lib)
 
+    # load fonts that aren't just in the font folders
+    config.assets.precompile << /\.(?:svg|eot|woff|woff2|ttf)$/
+
     # log to stdout to dump onto docker logs
     config.logger = Logger.new(STDOUT)
     config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'DEBUG')

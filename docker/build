@@ -29,6 +29,7 @@ docker run -d --name $APP \
   -e "SONAR_ENV=development" \
   -e "DATABASE_URL=$DATABASE_URL" \
   -e "SECRET_KEY_BASE=$SECRET_KEY_BASE" \
+  -e "AIRSONAR_API_KEY=token LETMEIN" \
   --dns 8.8.8.8 --dns 8.8.4.4 \
   local/$APP
 

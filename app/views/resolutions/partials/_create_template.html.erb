@@ -1,0 +1,18 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <%= f.form_group 'resolutions', label: { text: 'New Data', class: 'item-label' } do %>
+      <%= f.radio_button 'resolutions', 'approve_all', label: 'Approve', id: 'btn-approve-all', inline: true, checked: true %>
+      <%= f.radio_button 'resolutions', 'reject_all', label: 'Reject', id: 'btn-reject-all', inline: true %>
+    <% end %>
+  </div>
+  <ul class="list-group">
+    <% @new_data.each do |key, value| %>
+      <li class="list-group-item">
+        <%= f.form_group 'updates[' + key + ']', label: { text: key.titleize + ': ' + value.to_s, class:'item-label' } do %>
+          <%= f.radio_button 'updates[' + key + ']', 'approve', label: "Approve", inline: true, checked: true %>
+          <%= f.radio_button 'updates[' + key + ']', 'reject', label: "Reject", inline: true %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>

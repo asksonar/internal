@@ -1,30 +1,31 @@
 class Airsonar
   include HTTParty
-  base_uri 'http://webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
+  base_uri 'webservices-env.m4edbzxi9e.us-west-2.elasticbeanstalk.com'
   raise_on (400..599).to_a
 
   def initialize()
     @options = {
       headers: {
-        "Content-Type" => "application/json"
+        "Content-Type" => "application/json",
+        "Authorization" => Rails.application.secrets.airsonar_api_key
       }
     }
   end
 
-  def getResolutionQueue
-    self.class.get("/resolutionSvc/queue/").parsed_response
+  def get_resolutions
+    self.class.get("/resolutionSvc/queue/", @options).parsed_response
   end
 
-  def getResolution(id)
-    self.class.get("/resolutionSvc/queue/#{id}").parsed_response
+  def get_resolution(id)
+    self.class.get("/resolutionSvc/queue/#{id}", @options).parsed_response
   end
 
-  def applyResolution(id, options)
-    options = @options.merge({ body: options })
+  def apply_resolution(id, options)
+    options = @options.merge({ body: options.to_json })
     self.class.post("/resolutionSvc/queue/#{id}", options)
   end
 
-  def rejectResolution(id)
-    self.class.delete("/resolutionSvc/queue/#{id}")
+  def reject_resolution(id)
+    self.class.delete("/resolutionSvc/queue/#{id}", @options)
   end
 end

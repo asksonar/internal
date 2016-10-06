@@ -1,37 +1,33 @@
-require 'airsonar'
-
 class ResolutionsController < ApplicationController
-  # before_action :authenticate_user!
-
   def index
-    response = Airsonar.new.getResolutionQueue
-    @resolutions = response['change_items']
+    @resolutions = api.get_resolutions
   end
 
   def show
     @resolution_id = params[:id]
-    response = Airsonar.new.getResolution(@resolution_id)
-    merge_data = response['merge_data']
-    updates = response['updates']
+    response = api.get_resolution(@resolution_id)
 
-    if !updates['aircraft_history'].nil?
-      @update_type = 'aircraft_history'
-      @merge_data = merge_data['aircraft_history']
-      @new_data = updates['aircraft_history']
-    else
-      @update_type = 'aircraft'
-      @merge_data = merge_data['aircraft']
-      @new_data = updates['aircraft']
+    @resolution_type = response['action']
+    @user_comment = response['user_comment']
+    merge_data = response.fetch('merge_data', {})
+    updates = response.fetch('updates', {})
+
+    if @resolution_type == 'POST' || @resolution_type == 'PATCH'
+      @update_type = updates.keys.include?('aircraft_history') ? 'aircraft_history' : 'aircraft'
+    elsif @resolution_type == 'DELETE'
+      @update_type = merge_data.keys.include?('aircraft_history') ? 'aircraft_history' : 'aircraft'
     end
+
+    @new_data = updates.fetch(@update_type, {})
+    @merge_data = merge_data.fetch(@update_type, {})
   end
 
   def update
-    airsonar = Airsonar.new()
     approved_updates = updates.select { |key, value| value == 'approve' }.keys
     rejected_updates = updates.select { |key, value| value == 'reject' }.keys
 
     if approved_updates.empty?
-      response = airsonar.rejectResolution(params[:id])
+      api.reject_resolution(params[:id])
       flash[:info] = '<strong>Resolution successfully rejected</strong>'
     else
       options = Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
@@ -46,25 +42,25 @@ class ResolutionsController < ApplicationController
         end
       end
 
+      api.apply_resolution(params[:id], options)
       flash[:info] = '<strong>Resolution successfully merged</strong>'
-      response = airsonar.applyResolution(params[:id], options)
     end
-
+    
     redirect_to resolutions_path
   end
 
   private
 
   def merge_data
-    update_params[:merge_data]
+    update_params[:merge_data] || {}
   end
 
   def new_data
-    update_params[:new_data]
+    update_params[:new_data] || {}
   end
 
   def updates
-    update_params[:updates]
+    update_params[:updates] || {}
   end
 
   def update_type
@@ -76,16 +72,25 @@ class ResolutionsController < ApplicationController
       :update_type,
       :merge_data => [
         :id, :model, :msn, :delivery_date, :aircraft_status, :aircraft_type, :registration,
-        :engine_model, :engine_variant,:operator, :build_year, :aircraft_age, :line_number
+        :engine_model, :engine_variant, :operator, :operator_name, :build_year, :aircraft_age,
+        :line_number, :delete_aircraft_history, :engine_name, :seats_configuration
       ],
       :new_data => [
         :aircraft_status, :aircraft_type, :registration, :engine_model, :engine_variant,
-        :operator, :build_year, :aircraft_age, :line_number
+        :operator, :operator_name, :build_year, :aircraft_age, :line_number, :delete_aircraft_history,
+        :delivery_date, :engine_name, :seats_configuration
       ],
       :updates => [
         :aircraft_status, :aircraft_type, :registration, :engine_model, :engine_variant,
-        :operator, :build_year, :aircraft_age, :line_number
-      ]
+        :operator, :operator_name, :build_year, :aircraft_age, :line_number, :delete_aircraft_history,
+        :delivery_date, :engine_name, :seats_configuration
+      ],
     )
+  end
+
+  private
+
+  def api
+    @api ||= ResolutionsService.instance
   end
 end

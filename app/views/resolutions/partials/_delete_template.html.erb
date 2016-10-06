@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <%= f.form_group 'resolutions', label: { text: 'Existing Data', class: 'item-label' } do %>
+      <%= f.radio_button 'updates[delete_aircraft_history]', 'approve', label: 'Approve', inline: true, checked: true %>
+      <%= f.radio_button 'updates[delete_aircraft_history]', 'reject', label: 'Reject', inline: true %>
+    <% end %>
+  </div>
+  <ul class="list-group">
+    <% @merge_data.each do |key, value| %>
+      <li class="list-group-item"><%= key.titleize %>: <%= value %></li>
+    <% end %>
+    <% if @user_comment %>
+      <li class="list-group-item">User Comment: <%= @user_comment %></li>
+    <% end %>
+  </ul>
+</div>

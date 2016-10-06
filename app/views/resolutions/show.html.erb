@@ -1,5 +1,11 @@
 <% content_for :title do %>
-  Resolution Show Page
+  <% if @resolution_type == 'POST' %>
+    New <%= @update_type.titleize %>
+  <% elsif @resolution_type == 'DELETE' %>
+    Delete <%= @update_type.titleize %>
+  <% elsif @resolution_type == 'PATCH' %>
+    Update <%= @update_type.titleize %>
+  <% end %>
 <% end %>
 
 <section class='main-content-header'>
@@ -10,40 +16,24 @@
   <div class='row'>
     <%= bootstrap_form_for :resolutions, url: resolution_path(@resolution_id), method: :patch do |f| %>
       <%= f.hidden_field :update_type, value: @update_type %>
+
       <% @merge_data.each do |key,value| %>
         <%= f.hidden_field "merge_data[#{key}]", value: value %>
       <% end %>
+
       <% @new_data.each do |key,value| %>
         <%= f.hidden_field "new_data[#{key}]", value: value %>
       <% end %>
 
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">Existing Data</div>
-          <ul class="list-group">
-            <% @merge_data.each do |key, value| %>
-              <li class="list-group-item"><%= key.titleize %>: <%= value %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
+      <% if @resolution_type == 'POST' %>
+        <%= render partial: 'resolutions/partials/create_template', locals: {f: f} %>
+      <% elsif @resolution_type == 'DELETE' %>
+        <%= render partial: 'resolutions/partials/delete_template', locals: {f: f} %>
+      <% elsif @resolution_type == 'PATCH' %>
+        <%= render partial: 'resolutions/partials/update_template', locals: {f: f} %>
+      <% end %>
 
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">New Data</div>
-            <ul class="list-group">
-              <% @new_data.each do |key, value| %>
-                <li class="list-group-item">
-                  <%= f.form_group 'updates[' + key + ']', label: { text: key.titleize + ': ' + value.to_s, class:'item-label' } do %>
-                    <%= f.radio_button 'updates[' + key + ']', 'approve', label: "Approve", inline: true %>
-                    <%= f.radio_button 'updates[' + key + ']', 'reject', label: "Reject", inline: true %>
-                  <% end %>
-                </li>
-              <% end %>
-            </ul>
-        </div>
-        <%= f.submit "Save", class: 'btn btn-dark-blue btn-block' %>
-      </div>
+      <%= f.submit "Save", class: 'btn btn-dark-blue btn-block' %>
 
     <% end %>
   </div>
