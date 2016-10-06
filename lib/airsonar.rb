@@ -6,17 +6,18 @@ class Airsonar
   def initialize()
     @options = {
       headers: {
-        "Content-Type" => "application/json"
+        "Content-Type" => "application/json",
+        "Authorization" => Rails.application.secrets.airsonar_api_key
       }
     }
   end
 
   def get_resolutions
-    self.class.get("/resolutionSvc/queue/").parsed_response
+    self.class.get("/resolutionSvc/queue/", @options).parsed_response
   end
 
   def get_resolution(id)
-    self.class.get("/resolutionSvc/queue/#{id}").parsed_response
+    self.class.get("/resolutionSvc/queue/#{id}", @options).parsed_response
   end
 
   def apply_resolution(id, options)
@@ -25,6 +26,6 @@ class Airsonar
   end
 
   def reject_resolution(id)
-    self.class.delete("/resolutionSvc/queue/#{id}")
+    self.class.delete("/resolutionSvc/queue/#{id}", @options)
   end
 end

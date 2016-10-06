@@ -29,22 +29,23 @@ class ResolutionsController < ApplicationController
     if approved_updates.empty?
       api.reject_resolution(params[:id])
       flash[:info] = '<strong>Resolution successfully rejected</strong>'
-    end
+    else
+      options = Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
 
-    options = Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
+      if approved_updates.present? && rejected_updates.present?
+        merge_data.each do |key, value|
+          options[:merge_data][update_type][key] = value
+        end
 
-    if approved_updates.present? && rejected_updates.present?
-      merge_data.each do |key, value|
-        options[:merge_data][update_type][key] = value
+        approved_updates.each do |key, value|
+          options[:updates][update_type][key] = new_data[key]
+        end
       end
 
-      approved_updates.each do |key, value|
-        options[:updates][update_type][key] = new_data[key]
-      end
+      api.apply_resolution(params[:id], options)
+      flash[:info] = '<strong>Resolution successfully merged</strong>'
     end
-
-    api.apply_resolution(params[:id], options)
-    flash[:info] = '<strong>Resolution successfully merged</strong>'
+    
     redirect_to resolutions_path
   end
 
