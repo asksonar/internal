@@ -1,4 +1,6 @@
 class ResolutionsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @resolutions = api.get_resolutions
   end
@@ -6,7 +8,7 @@ class ResolutionsController < ApplicationController
   def show
     @resolution_id = params[:id]
     response = api.get_resolution(@resolution_id)
-    
+
     @resolution_type = response['action']
     @user_comment = response['user_comment']
     merge_data = response.fetch('merge_data', {})
