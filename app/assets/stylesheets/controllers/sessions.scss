@@ -23,10 +23,23 @@
 #passwords-edit,
 #passwords-update,
 #registrations-new,
-#registrations-create {
+#registrations-create {  
   .panel {
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    padding: 20px;
+    background: #FAFAFA;
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+
+    .panel-heading {
+      padding: 0px;
+    }
+    .panel-body {
+      padding: 0px;
+    }
 
     .form-group {
       margin-bottom: 10px;
