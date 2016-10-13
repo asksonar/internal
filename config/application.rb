@@ -34,12 +34,12 @@ module Internal
     puts config.properties
 
     # add mail configurations for use by devise to send forgot password mails
-    config.action_mailer.default_url_options = { host: 'my.asksonar.com' }
+    config.action_mailer.default_url_options = { host: 'internal.asksonar.com' }
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
       address:              'smtp.sparkpostmail.com',
       port:                 587,
-      domain:               'my.asksonar.com',
+      domain:               'internal.asksonar.com',
       user_name:            config.properties['sparkpost_username'],
       password:             config.properties['sparkpost_api_key'],
       authentication:       'plain'
