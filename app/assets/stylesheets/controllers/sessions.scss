@@ -1,0 +1,100 @@
+#sessions-new,
+#sessions-create,
+#passwords-new,
+#passwords-create,
+#passwords-edit,
+#passwords-update {
+  .panel {
+    max-width: 450px;
+  }
+}
+
+#registrations-new,
+#registrations-create {
+  .panel {
+    max-width: 450px;
+  }
+}
+
+#sessions-new,
+#sessions-create,
+#passwords-new,
+#passwords-create,
+#passwords-edit,
+#passwords-update,
+#registrations-new,
+#registrations-create {
+  .panel {
+    margin-left: auto;
+    margin-right: auto;
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    p + .form-group {
+      margin-top: 10px;
+    }
+
+    .ctn-remember-forgot {
+      margin-top: -10px;
+
+      .checkbox {
+        float: left;
+      }
+      a {
+        padding-top: 7px; // match the checkbox
+      }
+    }
+
+    .btn-dark-blue {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .link-sign-up {
+      margin-top: 30px;
+      p {
+        line-height: 31px;
+      }
+    }
+  }
+}
+
+#registrations-edit,
+#registrations-update {
+  .panel {
+    h2 {
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+      border-bottom: solid 1px #E2E8E9;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .panel-section + .panel-section {
+    position: relative;
+    padding-top: 25px;
+
+    &:before {
+      background: #E2E8E9;
+      content: '';
+      height: 1px;
+      top: 0px;
+      left: -20px;
+      right: -20px;
+      position: absolute;
+    }
+  }
+
+  .btn {
+    margin-bottom: 10px;
+
+    & + & {
+      margin-left: 5px;
+    }
+  }
+}

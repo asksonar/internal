@@ -17,6 +17,17 @@ Rails.application.routes.draw do
 
   resources :resolutions
 
+  ################
+  # shared login #
+  ################
+
+  devise_for :user,
+    path_names: {
+      sign_up: 'admin_sign_up',
+      sign_in: 'login',
+      sign_out: 'logout'
+    }
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # Serve websocket cable requests in-process

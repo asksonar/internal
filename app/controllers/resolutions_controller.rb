@@ -1,4 +1,6 @@
 class ResolutionsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @resolutions = api.get_resolutions
   end
@@ -45,7 +47,7 @@ class ResolutionsController < ApplicationController
       api.apply_resolution(params[:id], options)
       flash[:info] = '<strong>Resolution successfully merged</strong>'
     end
-    
+
     redirect_to resolutions_path
   end
 

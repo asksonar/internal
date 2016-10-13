@@ -27,5 +27,22 @@ module Internal
     config.action_dispatch.rescue_responses.merge!(
       'ActionController::ForbiddenError' => :forbidden
     )
+
+    config_path = File.join(Rails.root, "config/properties/#{ENV['SONAR_ENV']}.yml")
+    config_contents = File.read(config_path)
+    config.properties = YAML.load(config_contents)
+    puts config.properties
+
+    # add mail configurations for use by devise to send forgot password mails
+    config.action_mailer.default_url_options = { host: 'my.asksonar.com' }
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address:              'smtp.sparkpostmail.com',
+      port:                 587,
+      domain:               'my.asksonar.com',
+      user_name:            config.properties['sparkpost_username'],
+      password:             config.properties['sparkpost_api_key'],
+      authentication:       'plain'
+    }
   end
 end

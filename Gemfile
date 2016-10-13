@@ -41,7 +41,7 @@ gem 'devise_invitable'
 # bootstrap_form_for helper
 gem 'bootstrap_form'
 # navbar_item helper
-# gem 'rails_bootstrap_navbar'
+gem 'rails_bootstrap_navbar'
 # used in ActiveRecordHashids for obfuscating ids
 gem 'hashids'
 # user authorization framework

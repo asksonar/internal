@@ -41,6 +41,8 @@ GEM
       tzinfo (~> 1.1)
     arel (7.1.1)
     bcrypt (3.1.11)
+    bootstrap-navbar (2.3.0)
+      gem_config (~> 0.3)
     bootstrap_form (2.5.0)
     builder (3.2.2)
     byebug (9.0.5)
@@ -68,6 +70,7 @@ GEM
     eventmachine (1.2.0.1)
     execjs (2.7.0)
     ffi (1.9.14)
+    gem_config (0.3.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hashids (1.0.2)
@@ -149,6 +152,9 @@ GEM
       nokogiri (~> 1.6.0)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails_bootstrap_navbar (2.0.1)
+      bootstrap-navbar (~> 2.0)
+      rails (>= 3.0.0)
     railties (5.0.0.1)
       actionpack (= 5.0.0.1)
       activesupport (= 5.0.0.1)
@@ -232,6 +238,7 @@ DEPENDENCIES
   rails-assets-modulejs!
   rails-assets-remarkable-bootstrap-notify!
   rails-assets-zeroclipboard!
+  rails_bootstrap_navbar
   sanitize
   sass-rails (~> 5.0)
   spring

@@ -14,5 +14,8 @@
         <% end %>
       </li>
     <% end %>
+    <% if @user_comment %>
+      <li class="list-group-item">User Comment: <%= @user_comment %></li>
+    <% end %>
   </ul>
 </div>
